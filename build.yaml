@@ -24,8 +24,8 @@ include:
     shield: settings_reset
   - board: nice_nano//zmk
     shield: settings_reset
-  - board: rp2040_zero
-    shield: settings_reset
+    # - board: rp2040_zero        # see note on the Coral entries below
+    #   shield: settings_reset
     # Hammer
   - board: xiao_ble//zmk
     shield: hammer40
@@ -58,9 +58,17 @@ include:
   - board: nice_nano//zmk
     shield: acorn_peripheral_right
     # Coral v1 (Wired w/ RP-Zero)
-  - board: rp2040_zero
-    shield: coral_left
-    snippet: studio-rpc-usb-uart
-    cmake-args: -DCONFIG_ZMK_STUDIO=y
-  - board: rp2040_zero
-    shield: coral_right
+    #
+    # Disabled: rp2040_zero has no ZMK board variant, and ZMK's
+    # build-user-config workflow runs its "explicit ZMK compat" check under
+    # `sh -e`. The `west boards ... | grep "zmk"` pipeline therefore aborts the
+    # script before its own warning branch, failing the job with no annotation.
+    # These jobs failing also skips the Merge Output Artifacts job for the whole
+    # matrix. Re-enable once upstream fixes the check.
+    #
+    # - board: rp2040_zero
+    #   shield: coral_left
+    #   snippet: studio-rpc-usb-uart
+    #   cmake-args: -DCONFIG_ZMK_STUDIO=y
+    # - board: rp2040_zero
+    #   shield: coral_right
